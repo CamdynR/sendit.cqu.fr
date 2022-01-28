@@ -5,15 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Send It - CQU</title>
 
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
+
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="assets/styles/global.css">
 
   <!-- Main Script -->
-  <script src="script.js" type="module"></script>
+  <script src="assets/scripts/script.js" type="module"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <h1>Send It - CQU</h1>
-  </header>
+  <div id="envelope">
+    <header>
+      <p class="subtitle">Cam's Quick URLs</p>
+      <h1>Send It</h1>
+    </header>
+    <main>
+      <section id="instructions">
+        <p>Simply drag and drop any files you like into to area below to receive
+          a single-use download link for those files - or click <button>here</button>
+        </p>
+      </section>
+      <section id="file-drop">
+        <div id="drop-icon-wrapper">
+          <img src="assets/images/svg/package-drop.svg" 
+          alt="Package falling with a parachute" />
+          <p>Drop or Click Here</p>
+          <input type="file" name="file" multiple hidden>
+        </div>
+      </section>
+    </main>
+  </div>
 </body>
 </html>

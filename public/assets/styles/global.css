@@ -1,0 +1,171 @@
+/* global.css */
+
+* {
+  font-family: 'Indie Flower', cursive;
+  margin: 0;
+  padding: 0;
+}
+
+*[hidden] {
+  display: none;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+body {
+  align-items: center;
+  background-color: #fbf7f3;;
+  display: grid;
+  justify-items: center;
+}
+
+h1 {
+  font-size: 4.5vw;
+  margin-top: -10px;
+}
+
+header {
+  align-self: flex-start;
+  grid-area: center;
+  justify-self: flex-start;
+  margin: 6% 0 0 7%;
+}
+
+main {
+  align-items: flex-start;
+  align-self: flex-end;
+  display: grid;
+  grid-area: center;
+  grid-template-rows: 20% 80%;
+  justify-items: center;
+  height: 65%;
+  row-gap: 5%;
+}
+
+p.subtitle {
+  font-size: 1.64vw;
+}
+
+#drop-icon-wrapper {
+  align-items: center;
+  align-self: center;
+  display: grid;
+  height: 70%;
+  justify-items: center;
+}
+
+#drop-icon-wrapper img {
+  margin-left: 2%;
+  transform: rotate(20deg);
+  width: 4.5vw;
+}
+
+#envelope {
+  align-items: center;
+  aspect-ratio: 68763 / 46742;
+  background-color: #faf0e8;
+  background-image: url('../images/svg/envelope-and-stamp.svg');
+  background-size: cover;
+  background-repeat: none;
+  display: grid;
+  filter: drop-shadow(0 0 15px rgba(0,0,0,0.35));
+  grid-template-areas: 'center';
+  height: auto;
+  justify-items: center;
+  width: 60%;
+}
+
+#file-drop {
+  background-color: lightgray;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23888' stroke-width='6' stroke-dasharray='11%2c 15%2c 17' stroke-dashoffset='6' stroke-linecap='square'/%3e%3c/svg%3e");
+  color: #888;
+  display: grid;
+  font-size: 2vw;
+  height: 76%;
+  width: 86%;
+}
+
+#file-drop:hover {
+  cursor: pointer;
+}
+
+#file-drop.dragover {
+  background-image: none;
+  border: 4px solid #888;
+  box-sizing: border-box;
+}
+
+#instructions button {
+  background: transparent;
+  border: none;
+  color: #3366BB;
+  cursor: pointer;
+  font-size: 1.86vw;
+  text-decoration: underline;
+}
+
+#instructions button:hover {
+  text-decoration: none;
+}
+
+#instructions p {
+  font-size: 1.86vw;
+  margin: 0 7% 0 9%;
+}
+
+@media (max-aspect-ratio: 5/4) {
+  h1 {
+    font-size: 5.976vw;
+  }
+
+  p.subtitle {
+    font-size: 2.178vw;
+  }
+
+  #drop-icon-wrapper img {
+    width: 5.976vw;
+  }
+
+  #file-drop {
+    font-size: 2.656vw;
+  }
+
+  #instructions :is(button, p) {
+    font-size: 2.47vw;
+  }
+
+  #envelope {
+    width: 80%;
+  }
+}
+
+@media (max-aspect-ratio: 2/3) {
+  h1 {
+    font-size: 6.78vw;
+  }
+
+  p.subtitle {
+    font-size: 2.47vw;
+  }
+
+  #drop-icon-wrapper img {
+    width: 6.78vw;
+  }
+
+  #file-drop {
+    font-size: 3.012vw;
+  }
+
+  #instructions :is(button, p) {
+    font-size: 2.8vw;
+  }
+
+  #envelope {
+    width: 90%;
+  }
+}
