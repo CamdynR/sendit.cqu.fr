@@ -50,7 +50,7 @@ function triggerInput() {
 function getFileURL(files) {
   // Construct the data
   const data = new FormData();
-  files.forEach(file => {
+  Array.from(files).forEach(file => {
     data.append('files', file, file.name);
   });
   // Send the data
