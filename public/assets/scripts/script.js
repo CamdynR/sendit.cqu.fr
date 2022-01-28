@@ -48,5 +48,14 @@ function triggerInput() {
 
 // Uploads the files to the server and retrieves a URL to show the user
 function getFileURL(files) {
-  console.log(files);
+  // Construct the data
+  const data = new FormData();
+  for (let i = 0; i < files.length; i++) {
+    data.append(`file${i+1}`, files[i]);
+  }
+  // Send the data
+  fetch('https://sendit.cqu.fr/api', {
+    method: 'POST',
+    body: data
+  });
 }
