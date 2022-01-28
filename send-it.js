@@ -15,15 +15,20 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, callback) => {
     callback(null, file.originalname);
-  }
+  },
 });
-const upload = multer({ dest: 'uploads/', preservePath: true, storage: storage });
+
+// settings for where and how to store the uploaded files
+const upload = multer({
+  preservePath: true,
+  storage: storage,
+});
 
 // Set the static directory for the website
 app.use(express.static('public'));
 
 // Parse the body as a form post
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 
 // File retriever
 // app.get('/api/:file', (req, res) => {
@@ -31,12 +36,12 @@ app.use(express.urlencoded({ extended: true }))
 // });
 
 // File uploader
-// app.post('/api', upload.array('files'), (req, res) => {
-//   if (req.files) {
-//     console.log(req.files);
-//   }
-//   res.send('Success!');
-// });
+app.post('/api', upload.array('files'), (req, res) => {
+  if (req.files) {
+    console.log(req.files);
+  }
+  res.send('Success!');
+});
 
 // Starts the server
 app.listen(port, () => {
