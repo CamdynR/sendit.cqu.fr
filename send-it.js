@@ -10,7 +10,9 @@ const port = 3002;
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     const dir = `uploads/${req.get('X-Timestamp')}`;
-    fs.mkdirSync(dir);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+    }
     callback(null, dir);
   },
   filename: (req, file, callback) => {
