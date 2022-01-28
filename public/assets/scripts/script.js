@@ -54,9 +54,6 @@ function getFileURL(files) {
   // Send the data
   fetch('https://sendit.cqu.fr/api', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
     body: data
   });
 }
