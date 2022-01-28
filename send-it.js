@@ -25,10 +25,11 @@ app.post('/api', upload.array('files'), (req, res) => {
     console.log(req.file.mimetype);
     console.log(req.file.filename);
   } else if (req.files) {
-    console.log(req.files[0].originalName);
-    console.log(req.files[0].encoding);
-    console.log(req.files[0].mimetype);
-    console.log(req.files[0].filename);
+    console.log(req.files);
+    // console.log(req.files[0].originalName);
+    // console.log(req.files[0].encoding);
+    // console.log(req.files[0].mimetype);
+    // console.log(req.files[0].filename);
   }
   res.send('Success!');
 });
