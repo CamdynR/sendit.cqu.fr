@@ -2,9 +2,21 @@
 
 const express = require('express');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const fs = require('fs');
 const app = express();
 const port = 3002;
+
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    const dir = `uploads/${new Date().getTime()}`;
+    fs.mkdirSync(dir);
+    callback(null, dir);
+  },
+  filename: (req, file, callback) => {
+    callback(null, file.filename)
+  }
+});
+const upload = multer({ dest: 'uploads/', preservePath: true, storage: storage });
 
 // Set the static directory for the website
 app.use(express.static('public'));
@@ -18,12 +30,12 @@ app.use(express.urlencoded({ extended: true }))
 // });
 
 // File uploader
-// app.post('/api', upload.array('files'), (req, res) => {
-//   if (req.files) {
-//     console.log(req.files);
-//   }
-//   res.send('Success!');
-// });
+app.post('/api', upload.array('files'), (req, res) => {
+  if (req.files) {
+    console.log(req.files);
+  }
+  res.send('Success!');
+});
 
 // Starts the server
 app.listen(port, () => {
