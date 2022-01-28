@@ -18,11 +18,11 @@ app.get('/api/:file', (req, res) => {
 });
 
 // File uploader
-app.post('/api', upload.array('file1'), (req, res) => {
-  // console.log(req.files[0].originalName);
-  // console.log(req.files[0].encoding);
-  // console.log(req.files[0].mimetype);
-  // console.log(req.files[0].filename);
+app.post('/api', upload.array('files'), (req, res) => {
+  console.log(req.files[0].originalName);
+  console.log(req.files[0].encoding);
+  console.log(req.files[0].mimetype);
+  console.log(req.files[0].filename);
   res.send('Success!');
 });
 
