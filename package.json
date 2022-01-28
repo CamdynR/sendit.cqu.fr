@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "archiver": "^5.3.0",
     "express": "^4.17.2",
     "multer": "^1.4.4"
   }

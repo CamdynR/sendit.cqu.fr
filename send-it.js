@@ -2,13 +2,22 @@
 
 const express = require('express');
 const multer = require('multer');
+const archiver = require('archiver');
 const fs = require('fs');
 const app = express();
 const port = 3002;
 
+// Holds uploaded files URLs
+// Format - Timestamp: code
+const uploadURLs = {};
+
+// Banned URL list to avoid insensitive topics
+const bannedURLs = ['KKK'];
+
 // Set the storage directory and file's name
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
+    // Use the timestamp to create a new directory
     const dir = `uploads/${req.get('X-Timestamp')}`;
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
@@ -33,16 +42,38 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 // File retriever
-// app.get('/api/:file', (req, res) => {
-//   res.send('Hello, World!');
-// });
+app.get('/api/:files', (req, res) => {
+  const timestamp = uploadURLs[req.params.files];
+  const output = fs.createWriteStream(
+    __dirname + `downloads/${timestamp}/send-it.zip`
+  );
+  const archive = archiver('zip');
+  output.on('close', function () {
+    console.log(archive.pointer() + ' total bytes');
+    console.log(
+      'archiver has been finalized and the output file descriptor has closed.'
+    );
+    res.send(`Dir: uploads/${timestamp}`);
+  });
+  archive.on('error', function (err) {
+    res.status(500).send('Trouble zipping your files');
+    throw err;
+  });
+  archive.pipe(output);
+  archive.directory(`uploads/${timestamp}`, false);
+  archive.finalize();
+});
 
 // File uploader
 app.post('/api', upload.array('files'), (req, res) => {
   if (req.files) {
     console.log(req.files);
   }
-  res.send('Success!');
+  // Create a new short URL for the upload and store it
+  const newURL = generateURL();
+  uploadURLs[newURL] = req.get('X-Timestamp');
+  // Send back the new URL!
+  res.send(`https://sendit.cqu.fr/${newURL}`);
 });
 
 // Starts the server
@@ -53,3 +84,22 @@ app.listen(port, () => {
 /****************************/
 /***   Helper Functions   ***/
 /****************************/
+
+/**
+ * Generates a unique 4 character URL to use for a shortend URL
+ * @returns {string} The new shortened 3 character path e.g. /PWT
+ */
+function generateURL() {
+  const charSet = 'BCDFGHJKMNPQRSTVWXYZ';
+  let shortURL = '';
+  do {
+    shortURL = '';
+    for (let i = 0; i < 4; i++) {
+      shortURL += charSet.charAt(Math.floor(Math.random() * charSet.length));
+    }
+  } while (
+    Object.keys(uploadURLs).includes(shortURL) ||
+    bannedURLs.includes(shortURL)
+  );
+  return shortURL;
+}
