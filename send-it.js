@@ -1,6 +1,8 @@
 // send-it.js
 
 const express = require('express');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 const app = express();
 const port = 3002;
 
@@ -16,13 +18,8 @@ app.get('/api/:file', (req, res) => {
 });
 
 // File uploader
-app.post('/api', (req, res) => {
-  if (req.body) {
-    Object.keys(req.body).forEach(file => {
-      console.log(file, req.body[file]);
-    });
-  }
-  res.send('Hello, World!');
+app.post('/api', array(files), (req, res) => {
+  res.send('Success!');
 });
 
 // Starts the server

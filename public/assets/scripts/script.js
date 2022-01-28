@@ -50,12 +50,13 @@ function triggerInput() {
 function getFileURL(files) {
   // Construct the data
   const data = new FormData();
-  for (let i = 0; i < files.length; i++) {
-    data.append(`file${i+1}`, files[i]);
-  }
+  data.append(`files`, files);
   // Send the data
   fetch('https://sendit.cqu.fr/api', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
     body: data
   });
 }
