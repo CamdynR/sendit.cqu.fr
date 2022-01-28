@@ -44,6 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 // File retriever
 app.get('/api/:files', (req, res) => {
   const timestamp = uploadURLs[req.params.files];
+  fs.mkdirSync(`downloads/${timestamp}`);
   const output = fs.createWriteStream(
     __dirname + `downloads/${timestamp}/send-it.zip`
   );
@@ -53,7 +54,7 @@ app.get('/api/:files', (req, res) => {
     console.log(
       'archiver has been finalized and the output file descriptor has closed.'
     );
-    res.send(`Dir: uploads/${timestamp}`);
+    res.download(`downloads/${timestamp}/send-it.zip`);
   });
   archive.on('error', function (err) {
     res.status(500).send('Trouble zipping your files');
