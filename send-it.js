@@ -18,7 +18,7 @@ app.get('/api/:file', (req, res) => {
 });
 
 // File uploader
-app.post('/api', upload.array('files'), (req, res) => {
+app.post('/api', upload.array('file1'), (req, res) => {
   res.send('Success!');
 });
 
