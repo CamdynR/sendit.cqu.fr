@@ -9,7 +9,7 @@ const port = 3002;
 // Set the storage directory and file's name
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    const dir = `uploads/${new Date().getTime()}`;
+    const dir = `uploads/${req.get('X-Timestamp')}`;
     fs.mkdirSync(dir);
     callback(null, dir);
   },

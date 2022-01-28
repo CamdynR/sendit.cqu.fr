@@ -11,10 +11,16 @@ function init() {
 function bindListeners() {
   const dropZone = document.querySelector('#file-drop');
   const input = document.querySelector('input[type="file"]');
-  dropZone.addEventListener('dragover', e => toggleDragover(e, dropZone, true));
-  dropZone.addEventListener('dragleave', e => toggleDragover(e, dropZone, false));
-  dropZone.addEventListener('dragend', e => toggleDragover(e, dropZone, false));
-  dropZone.addEventListener('drop', e => addFilesToInput(e, dropZone));
+  dropZone.addEventListener('dragover', (e) =>
+    toggleDragover(e, dropZone, true)
+  );
+  dropZone.addEventListener('dragleave', (e) =>
+    toggleDragover(e, dropZone, false)
+  );
+  dropZone.addEventListener('dragend', (e) =>
+    toggleDragover(e, dropZone, false)
+  );
+  dropZone.addEventListener('drop', (e) => addFilesToInput(e, dropZone));
   dropZone.addEventListener('click', triggerInput);
   input.addEventListener('change', () => getFileURL(input.files));
 }
@@ -37,7 +43,7 @@ function addFilesToInput(e, dropZone) {
     input.files = e.dataTransfer.files;
   }
   dropZone.classList.remove('dragover');
-  getFileURL(input.files)
+  getFileURL(input.files);
 }
 
 // Opens the input element menu
@@ -50,12 +56,15 @@ function triggerInput() {
 function getFileURL(files) {
   // Construct the data
   const data = new FormData();
-  Array.from(files).forEach(file => {
+  Array.from(files).forEach((file) => {
     data.append('files', file, file.name);
   });
   // Send the data
   fetch('https://sendit.cqu.fr/api', {
     method: 'POST',
-    body: data
+    headers: {
+      'X-Timestamp': new Date().getTime(),
+    },
+    body: data,
   });
 }
