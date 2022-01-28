@@ -6,6 +6,7 @@ const fs = require('fs');
 const app = express();
 const port = 3002;
 
+// Set the storage directory and file's name
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     const dir = `uploads/${new Date().getTime()}`;
@@ -30,12 +31,12 @@ app.use(express.urlencoded({ extended: true }))
 // });
 
 // File uploader
-app.post('/api', upload.array('files'), (req, res) => {
-  if (req.files) {
-    console.log(req.files);
-  }
-  res.send('Success!');
-});
+// app.post('/api', upload.array('files'), (req, res) => {
+//   if (req.files) {
+//     console.log(req.files);
+//   }
+//   res.send('Success!');
+// });
 
 // Starts the server
 app.listen(port, () => {
