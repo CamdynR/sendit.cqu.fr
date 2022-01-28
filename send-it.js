@@ -13,26 +13,17 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }))
 
 // File retriever
-app.get('/api/:file', (req, res) => {
-  res.send('Hello, World!');
-});
+// app.get('/api/:file', (req, res) => {
+//   res.send('Hello, World!');
+// });
 
 // File uploader
-app.post('/api', upload.array('files'), (req, res) => {
-  if (req.file) {
-    console.log(req.file.originalName);
-    console.log(req.file.encoding);
-    console.log(req.file.mimetype);
-    console.log(req.file.filename);
-  } else if (req.files) {
-    console.log(req.files);
-    // console.log(req.files[0].originalName);
-    // console.log(req.files[0].encoding);
-    // console.log(req.files[0].mimetype);
-    // console.log(req.files[0].filename);
-  }
-  res.send('Success!');
-});
+// app.post('/api', upload.array('files'), (req, res) => {
+//   if (req.files) {
+//     console.log(req.files);
+//   }
+//   res.send('Success!');
+// });
 
 // Starts the server
 app.listen(port, () => {

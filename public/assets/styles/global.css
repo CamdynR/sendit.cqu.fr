@@ -100,19 +100,6 @@ p.subtitle {
   box-sizing: border-box;
 }
 
-#instructions button {
-  background: transparent;
-  border: none;
-  color: #3366BB;
-  cursor: pointer;
-  font-size: 1.86vw;
-  text-decoration: underline;
-}
-
-#instructions button:hover {
-  text-decoration: none;
-}
-
 #instructions p {
   font-size: 1.86vw;
   margin: 0 7% 0 9%;
@@ -135,7 +122,7 @@ p.subtitle {
     font-size: 2.656vw;
   }
 
-  #instructions :is(button, p) {
+  #instructions p {
     font-size: 2.47vw;
   }
 
@@ -161,7 +148,7 @@ p.subtitle {
     font-size: 3.012vw;
   }
 
-  #instructions :is(button, p) {
+  #instructions p {
     font-size: 2.8vw;
   }
 
