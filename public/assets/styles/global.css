@@ -156,3 +156,9 @@ p.subtitle {
     width: 90%;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #373844;
+  }
+}
