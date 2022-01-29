@@ -41,41 +41,41 @@ app.use(express.static('public'));
 // Parse the body as a form post
 app.use(express.urlencoded({ extended: true }));
 
-// File retriever
-app.get('/api/:files', (req, res) => {
-  const timestamp = uploadURLs[req.params.files];
-  fs.mkdirSync(`downloads/${timestamp}`);
-  const output = fs.createWriteStream(
-    __dirname + `downloads/${timestamp}/send-it.zip`
-  );
-  const archive = archiver('zip');
-  output.on('close', function () {
-    console.log(archive.pointer() + ' total bytes');
-    console.log(
-      'archiver has been finalized and the output file descriptor has closed.'
-    );
-    res.download(`downloads/${timestamp}/send-it.zip`);
-  });
-  archive.on('error', function (err) {
-    res.status(500).send('Trouble zipping your files');
-    throw err;
-  });
-  archive.pipe(output);
-  archive.directory(`uploads/${timestamp}`, false);
-  archive.finalize();
-});
+// // File retriever
+// app.get('/api/:files', (req, res) => {
+//   const timestamp = uploadURLs[req.params.files];
+//   fs.mkdirSync(`downloads/${timestamp}`);
+//   const output = fs.createWriteStream(
+//     __dirname + `downloads/${timestamp}/send-it.zip`
+//   );
+//   const archive = archiver('zip');
+//   output.on('close', function () {
+//     console.log(archive.pointer() + ' total bytes');
+//     console.log(
+//       'archiver has been finalized and the output file descriptor has closed.'
+//     );
+//     res.download(`downloads/${timestamp}/send-it.zip`);
+//   });
+//   archive.on('error', function (err) {
+//     res.status(500).send('Trouble zipping your files');
+//     throw err;
+//   });
+//   archive.pipe(output);
+//   archive.directory(`uploads/${timestamp}`, false);
+//   archive.finalize();
+// });
 
-// File uploader
-app.post('/api', upload.array('files'), (req, res) => {
-  if (req.files) {
-    console.log(req.files);
-  }
-  // Create a new short URL for the upload and store it
-  const newURL = generateURL();
-  uploadURLs[newURL] = req.get('X-Timestamp');
-  // Send back the new URL!
-  res.send(`https://sendit.cqu.fr/${newURL}`);
-});
+// // File uploader
+// app.post('/api', upload.array('files'), (req, res) => {
+//   if (req.files) {
+//     console.log(req.files);
+//   }
+//   // Create a new short URL for the upload and store it
+//   const newURL = generateURL();
+//   uploadURLs[newURL] = req.get('X-Timestamp');
+//   // Send back the new URL!
+//   res.send(`https://sendit.cqu.fr/api/${newURL}`);
+// });
 
 // Starts the server
 app.listen(port, () => {
