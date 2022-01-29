@@ -46,7 +46,7 @@ app.get('/api/:files', (req, res) => {
   const timestamp = uploadURLs[req.params.files];
   fs.mkdirSync(`downloads/${timestamp}`);
   const output = fs.createWriteStream(
-    __dirname + `downloads/${timestamp}/send-it.zip`
+    __dirname + `/downloads/${timestamp}/send-it.zip`
   );
   const archive = archiver('zip');
   output.on('close', function () {
