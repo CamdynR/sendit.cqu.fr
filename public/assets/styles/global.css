@@ -71,7 +71,8 @@ p.subtitle {
   background-color: #faf0e8;
   background-image: url('../images/svg/envelope-and-stamp.svg');
   background-size: cover;
-  background-repeat: none;
+  background-repeat: no-repeat;
+  border-radius: 4px;
   display: grid;
   filter: drop-shadow(0 0 15px rgba(0,0,0,0.35));
   grid-template-areas: 'center';
