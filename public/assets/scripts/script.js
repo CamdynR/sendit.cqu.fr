@@ -125,7 +125,7 @@ async function sendEnvelope() {
     envelope.classList.add('uploaded');
   setTimeout(() => {
     resolve();
-  }, 2000);
+  }, 2500);
 });
 }
 
