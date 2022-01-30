@@ -7,7 +7,7 @@
 }
 
 *[hidden] {
-  display: none;
+  display: none !important;
 }
 
 body, html {
@@ -22,6 +22,7 @@ body {
   background-color: #fbf7f3;;
   display: grid;
   justify-items: center;
+  overflow: hidden;
 }
 
 h1 {
@@ -66,8 +67,48 @@ p.subtitle {
 }
 
 #envelope {
+  aspect-ratio: 68763 / 46742;
+  height: auto;
+  transition: transform 1s;
+  transform-origin: center right;
+  transform-style: preserve-3d;
+  width: 60%;
+}
+
+#envelope.flipped {
+  transform: translateY(-50%) rotateX(180deg);
+}
+
+#envelope.uploaded {
+  transform: translateX(100vw);
+  transition: 1.25s ease transform;
+  transition-delay: 0.8s;
+}
+
+#envelope-back {
   align-items: center;
   aspect-ratio: 68763 / 46742;
+  backface-visibility: hidden;
+  background-color: white;
+  background: repeating-linear-gradient(white, white 1.2vw, #a5acf1 1.3vw, #a5acf1 1.32vw);
+  color: rgb(80, 80, 80);
+  height: auto;
+  display: grid;
+  font-size: 2.4vw;
+  grid-template-areas: 'center';
+  justify-items: center;
+  transform: rotateX(180deg);
+  width: 100%;
+}
+
+#envelope-back > * {
+  grid-area: center;
+}
+
+#envelope-front {
+  align-items: center;
+  aspect-ratio: 68763 / 46742;
+  backface-visibility: hidden;
   background-color: #faf0e8;
   background-image: url('../images/svg/envelope-and-stamp.svg');
   background-size: cover;
@@ -78,7 +119,68 @@ p.subtitle {
   grid-template-areas: 'center';
   height: auto;
   justify-items: center;
-  width: 60%;
+  opacity: 1;
+  width: 100%;
+}
+
+#envelope-flaps {
+  align-items: center;
+  display: grid;
+  grid-area: center;
+  grid-template-areas: 'center';
+  height: 100%;
+  justify-items: center;
+  width: 100%;
+  z-index: 3;
+}
+
+#envelope-flaps > img {
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
+  grid-area: center;
+}
+
+/* Top flap */
+#envelope-flaps > img:nth-child(4) {
+  align-self: flex-start;
+  height: 0%;
+  width: 100%;
+}
+
+/* Bottom flap */
+#envelope-flaps > img:nth-child(3) {
+  align-self: flex-end;
+  height: 0%;
+  width: 100%;
+}
+
+/* Right flap */
+#envelope-flaps > img:nth-child(2) {
+  justify-self: flex-end;
+  width: 0%;
+}
+
+/* Left flap */
+#envelope-flaps > img:nth-child(1) {
+  justify-self: flex-start;
+  width: 0%;
+}
+
+/* Reveals the  */
+#envelope.uploaded #envelope-flaps > img:is(:nth-child(2), :nth-child(1)) {
+  transition: 0.5s ease width;
+  width: 50%;
+}
+
+#envelope.uploaded #envelope-flaps > :nth-child(3) {
+  transition: 0.5s ease height;
+  transition-delay: 0.2s;
+  height: calc((548.33*((1236*100%)/840.18))/1236);
+}
+
+#envelope.uploaded #envelope-flaps > :nth-child(4) {
+  transition: 0.5s ease height;
+  transition-delay: 0.4s;
+  height: calc((548.33*((1236*100%)/840.18))/1236);
 }
 
 #file-drop {

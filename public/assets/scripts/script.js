@@ -68,3 +68,16 @@ function getFileURL(files) {
     body: data,
   });
 }
+
+function flipEnvelope() {
+  const envelope = document.querySelector('#envelope');
+  envelope.classList.add('flipped');
+}
+
+function sendEnvelope() {
+  const envelope = document.querySelector('#envelope');
+  envelope.classList.add('uploaded');
+}
+
+window.flipEnvelope = flipEnvelope;
+window.sendEnvelope = sendEnvelope;

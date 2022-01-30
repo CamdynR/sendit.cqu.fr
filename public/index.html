@@ -19,24 +19,36 @@
 </head>
 <body>
   <div id="envelope">
-    <header>
-      <p class="subtitle">Cam's Quick URLs</p>
-      <h1>Send It</h1>
-    </header>
-    <main>
-      <section id="instructions">
-        <p>Simply drag and drop any files you like into the area below to create a single-use download link.
-        </p>
-      </section>
-      <section id="file-drop">
-        <div id="drop-icon-wrapper">
-          <img src="assets/images/svg/package-drop.svg" 
-          alt="Package falling with a parachute" />
-          <p>Drop or Click Here</p>
-          <input type="file" name="file" multiple hidden>
-        </div>
-      </section>
-    </main>
+    <div id="envelope-front">
+      <header>
+        <p class="subtitle">Cam's Quick URLs</p>
+        <h1>Send It</h1>
+      </header>
+      <main>
+        <section id="instructions">
+          <p>Simply drag and drop any files you like into the area below to create a single-use download link.
+          </p>
+        </section>
+        <section id="file-drop">
+          <div id="drop-icon-wrapper">
+            <img src="assets/images/svg/package-drop.svg" 
+            alt="Package falling with a parachute" />
+            <p>Drop or Click Here</p>
+            <input type="file" name="file" multiple hidden>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div id="envelope-back">
+      <h2>Sending...</h2>
+      <div id="envelope-flaps">
+        <img src="assets/images/svg/flap-left.svg" alt="Left envelope flap" />
+        <img src="assets/images/svg/flap-right.svg" alt="Right envelope flap" />
+        <img src="assets/images/svg/flap-bottom.svg" alt="Bottom envelope flap" />
+        <img src="assets/images/svg/flap-top.svg" alt="Top envelope flap" />
+      </div>
+    </div>
   </div>
+  <!-- <div id="link"></div> -->
 </body>
 </html>
