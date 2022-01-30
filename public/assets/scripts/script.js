@@ -21,9 +21,9 @@ function bindListeners() {
   dropZone.addEventListener('dragend', (e) =>
     toggleDragover(e, dropZone, false)
   );
-  dropZone.addEventListener('drop', (e) => {
-    console.log('test');
-    flipEnvelope();
+  dropZone.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    await flipEnvelope();
     addFilesToInput(e, dropZone);
   });
   dropZone.addEventListener('click', triggerInput);
@@ -43,7 +43,6 @@ function toggleDragover(e, dropZone, isDragover) {
 
 // When files are dropped into the dropzone, add those files to the input element
 function addFilesToInput(e, dropZone) {
-  e.preventDefault();
   const input = document.querySelector('input[type="file"]');
   if (e.dataTransfer.files.length) {
     input.files = e.dataTransfer.files;
