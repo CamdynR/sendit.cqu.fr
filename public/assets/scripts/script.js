@@ -21,9 +21,11 @@ function bindListeners() {
   dropZone.addEventListener('dragend', (e) =>
     toggleDragover(e, dropZone, false)
   );
-  dropZone.addEventListener('drop', async (e) => {
-    await flipEnvelope();
-    addFilesToInput(e, dropZone);
+  dropZone.addEventListener('drop', (e) => {
+    flipEnvelope();
+    setTimeout(() => {
+      addFilesToInput(e, dropZone);
+    }, 1000);
   });
   dropZone.addEventListener('click', triggerInput);
   input.addEventListener('change', () => getFileURL(input.files));
