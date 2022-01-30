@@ -22,34 +22,17 @@ body {
   background-color: #fbf7f3;;
   display: grid;
   justify-items: center;
+  grid-template-areas: 'center';
   overflow: hidden;
+}
+
+body > * {
+  grid-area: center;
 }
 
 h1 {
   font-size: 4.5vw;
   margin-top: -10px;
-}
-
-header {
-  align-self: flex-start;
-  grid-area: center;
-  justify-self: flex-start;
-  margin: 6% 0 0 7%;
-}
-
-main {
-  align-items: flex-start;
-  align-self: flex-end;
-  display: grid;
-  grid-area: center;
-  grid-template-rows: 20% 80%;
-  justify-items: center;
-  height: 65%;
-  row-gap: 5%;
-}
-
-p.subtitle {
-  font-size: 1.64vw;
 }
 
 #drop-icon-wrapper {
@@ -68,7 +51,9 @@ p.subtitle {
 
 #envelope {
   aspect-ratio: 68763 / 46742;
+  display: grid;
   height: auto;
+  grid-template-areas: 'center';
   transition: transform 1s;
   transform-origin: center right;
   transform-style: preserve-3d;
@@ -76,13 +61,52 @@ p.subtitle {
 }
 
 #envelope.flipped {
-  transform: translateY(-50%) rotateX(180deg);
+  transform: rotateX(180deg);
 }
 
 #envelope.uploaded {
-  transform: translateX(100vw);
-  transition: 1.25s ease transform;
+  transform: translateX(100vw) rotateX(180deg);
+  transition: 1s ease transform;
   transition-delay: 0.8s;
+}
+
+#envelope.uploaded #envelope-back {
+  transform: rotateX(180deg);
+}
+
+#envelope.uploaded #envelope-back h2::after {
+  animation: none;
+  content: '';
+}
+
+#envelope.uploaded #txt-uploading {
+  display: none;
+}
+
+#envelope.uploaded #txt-finished {
+  display: block;
+}
+
+#envelope header {
+  align-self: flex-start;
+  grid-area: center;
+  justify-self: flex-start;
+  margin: 6% 0 0 7%;
+}
+
+#envelope main {
+  align-items: flex-start;
+  align-self: flex-end;
+  display: grid;
+  grid-area: center;
+  grid-template-rows: 20% 80%;
+  justify-items: center;
+  height: 65%;
+  row-gap: 5%;
+}
+
+#envelope p.subtitle {
+  font-size: 1.64vw;
 }
 
 #envelope-back {
@@ -90,11 +114,11 @@ p.subtitle {
   aspect-ratio: 68763 / 46742;
   backface-visibility: hidden;
   background-color: white;
-  background: repeating-linear-gradient(white, white 1.2vw, #a5acf1 1.3vw, #a5acf1 1.32vw);
   color: rgb(80, 80, 80);
   height: auto;
   display: grid;
   font-size: 2.4vw;
+  grid-area: center;
   grid-template-areas: 'center';
   justify-items: center;
   transform: rotateX(180deg);
@@ -105,21 +129,32 @@ p.subtitle {
   grid-area: center;
 }
 
+#envelope-back>h2 {
+  margin-left: -2vw;
+}
+
+#envelope-back>h2::after {
+  animation: loadingDots 1s infinite;
+  animation-timing-function: linear;
+  content: '';
+  position: absolute;
+}
+
 #envelope-front {
   align-items: center;
   aspect-ratio: 68763 / 46742;
   backface-visibility: hidden;
   background-color: #faf0e8;
   background-image: url('../images/svg/envelope-and-stamp.svg');
-  background-size: cover;
   background-repeat: no-repeat;
+  background-size: cover;
   border-radius: 4px;
   display: grid;
   filter: drop-shadow(0 0 15px rgba(0,0,0,0.35));
+  grid-area: center;
   grid-template-areas: 'center';
   height: auto;
   justify-items: center;
-  opacity: 1;
   width: 100%;
 }
 
@@ -208,6 +243,147 @@ p.subtitle {
   margin: 0 7% 0 9%;
 }
 
+#postcard {
+  align-items: center;
+  aspect-ratio: 68763 / 46742;
+  background-color: #faf0e8;
+  background-image: url('../images/svg/postcard-outline.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 4px;
+  display: grid;
+  height: auto;
+  filter: drop-shadow(0 0 15px rgba(0,0,0,0.35));
+  grid-template-areas: 'center';
+  justify-items: center;
+  transform: translateX(-100vw);
+  width: 60%;
+}
+
+#envelope.uploaded ~ #postcard {
+  transform: translateX(0vw);
+  transition: 1s ease transform;
+  transition-delay: 1s;
+}
+
+#postcard > * {
+  color: rgb(153, 153, 153);
+  grid-area: center;
+}
+
+#postcard > header {
+  align-self: flex-start;
+  font-size: 2vw;
+  margin-top: 5%;
+}
+
+#postcard > #link-wrapper {
+  align-items: center;
+  border-right: 3px solid rgb(182, 182, 182);
+  box-sizing: border-box;
+  display: grid;
+  height: 65%;
+  justify-items: center;
+  justify-self: flex-start;
+  margin: 5% 0 0 4.5%;
+  width: 45.5%;
+}
+
+#postcard > #link-wrapper > *:not(footer) {
+  font-family: sans-serif;
+}
+
+#postcard > #link-wrapper #download-link {
+  background-color: #4d56da;
+  border-radius: 4px;
+  color: white;
+  font-size: 2vw;
+  margin-top: 6%;
+  padding: 1% 4% 2% 4%;
+}
+
+#postcard > #link-wrapper #copy {
+  align-self: flex-start;
+  background-color: rgb(110, 108, 108);
+  border-radius: 4px;
+  border: none;
+  color: whitesmoke;
+  font-size: 1.5vw;
+  margin-top: 4%;
+  padding: 1% 4% 2% 4%;
+  transition: 0.05s linear all;
+}
+
+#postcard > #link-wrapper #copy:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: 0.05s linear all;
+}
+
+#postcard > #link-wrapper #copy:active {
+  transform: scale(1.04);
+  transition: none;
+}
+
+#postcard > #link-wrapper #copy::before {
+  background-color: rgb(65, 65, 65);
+  border-radius: 5px;
+  content: 'Copied!';
+  color: white;
+  margin: -55% -25%;
+  padding: 4% 9%;
+  position: absolute;
+  transition: 2s ease all;
+  opacity: 0;
+}
+
+#postcard > #link-wrapper #copy.copied::before {
+  transition: none;
+  opacity: 0.7;
+}
+
+#postcard > #link-wrapper footer  {
+  align-self: flex-end;
+  display: inline-block;
+  justify-self: flex-start;
+  margin: 0 0 5% 7.5%;
+  width: 85%;
+}
+
+#postcard > #link-wrapper footer p {
+  border-bottom: 2px solid rgb(153, 153, 153);
+  font-size: 2vw;
+  padding: 0;
+  height: 7vh;
+}
+
+#postcard > #link-wrapper footer span {
+  color: black;
+  font-size: 4vw;
+  margin-left: 5%;
+}
+
+#postcard > #qr-wrapper {
+  align-items: center;
+  box-sizing: border-box;
+  display: grid;
+  height: 65%;
+  justify-items: center;
+  justify-self: flex-end;
+  margin: 5% 4.5% 0 0;
+  width: 45.5%;
+}
+
+#postcard #qr-code {
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.275));
+  height: auto;
+  width: 72%;
+}
+
+#txt-finished {
+  display: none;
+}
+
 @media (max-aspect-ratio: 5/4) {
   h1 {
     font-size: 5.976vw;
@@ -263,5 +439,19 @@ p.subtitle {
 @media (prefers-color-scheme: dark) {
   body {
     background-color: #2d2e35;;
+  }
+}
+
+@keyframes loadingDots {
+  0% {
+    content: '.';
+  }
+
+  50% {
+    content: '..';
+  }
+
+  100% {
+    content: '...';
   }
 }

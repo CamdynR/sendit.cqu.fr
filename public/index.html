@@ -18,8 +18,8 @@
   <link href="assets/styles/fonts/indie-flower/indie-flower.css" rel="stylesheet">
 </head>
 <body>
-  <div id="envelope">
-    <div id="envelope-front">
+  <section id="envelope">
+    <section id="envelope-front">
       <header>
         <p class="subtitle">Cam's Quick URLs</p>
         <h1>Send It</h1>
@@ -38,17 +38,34 @@
           </div>
         </section>
       </main>
-    </div>
-    <div id="envelope-back">
-      <h2>Sending...</h2>
+    </section>
+    <section id="envelope-back">
+      <h2>
+        <span id="txt-uploading">Uploading</span>
+        <span id="txt-finished">Finished!</span>
+      </h2>
       <div id="envelope-flaps">
         <img src="assets/images/svg/flap-left.svg" alt="Left envelope flap" />
         <img src="assets/images/svg/flap-right.svg" alt="Right envelope flap" />
         <img src="assets/images/svg/flap-bottom.svg" alt="Bottom envelope flap" />
         <img src="assets/images/svg/flap-top.svg" alt="Top envelope flap" />
       </div>
-    </div>
-  </div>
-  <!-- <div id="link"></div> -->
+    </section>
+  </section>
+  <section id="postcard">
+    <header>
+      <h2>Postcard</h2>
+    </header>
+    <section id="link-wrapper">
+      <output id="download-link"></output>
+      <button id="copy">Copy</button>
+      <footer>
+        <p>from: <span>Cam</span></p>
+      </footer>
+    </section>
+    <section id="qr-wrapper">
+      <img id="qr-code" src="" alt="QR Code for the link">
+    </section>
+  </section>
 </body>
 </html>

@@ -42,40 +42,40 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 // File retriever
-// app.get('/api/:files', (req, res) => {
-//   const timestamp = uploadURLs[req.params.files];
-//   const output = fs.createWriteStream(
-//     __dirname + `/downloads/${timestamp}.zip`
-//   );
-//   const archive = archiver('zip');
-//   output.on('close', function () {
-//     res.download(`downloads/${timestamp}.zip`, 'send-it.zip', err => {
-//       if (!err) {
-//         fs.rmSync(`uploads/${timestamp}`, { recursive: true, force: true });
-//         fs.rmSync(`downloads/${timestamp}.zip`);
-//       }
-//     });
-//   });
-//   archive.on('error', function (err) {
-//     res.status(500).send('Trouble zipping your files');
-//     throw err;
-//   });
-//   archive.pipe(output);
-//   archive.directory(`uploads/${timestamp}`, false);
-//   archive.finalize();
-// });
+app.get('/api/:files', (req, res) => {
+  const timestamp = uploadURLs[req.params.files];
+  const output = fs.createWriteStream(
+    __dirname + `/downloads/${timestamp}.zip`
+  );
+  const archive = archiver('zip');
+  output.on('close', function () {
+    res.download(`downloads/${timestamp}.zip`, 'send-it.zip', err => {
+      if (!err) {
+        fs.rmSync(`uploads/${timestamp}`, { recursive: true, force: true });
+        fs.rmSync(`downloads/${timestamp}.zip`);
+      }
+    });
+  });
+  archive.on('error', function (err) {
+    res.status(500).send('Trouble zipping your files');
+    throw err;
+  });
+  archive.pipe(output);
+  archive.directory(`uploads/${timestamp}`, false);
+  archive.finalize();
+});
 
 // File uploader
-// app.post('/api', upload.array('files'), (req, res) => {
-//   if (req.files) {
-//     console.log(req.files);
-//   }
-//   // Create a new short URL for the upload and store it
-//   const newURL = generateURL();
-//   uploadURLs[newURL] = req.get('X-Timestamp');
-//   // Send back the new URL!
-//   res.send(`https://sendit.cqu.fr/api/${newURL}`);
-// });
+app.post('/api', upload.array('files'), (req, res) => {
+  if (req.files) {
+    console.log(req.files);
+  }
+  // Create a new short URL for the upload and store it
+  const newURL = generateURL();
+  uploadURLs[newURL] = req.get('X-Timestamp');
+  // Send back the new URL!
+  res.json({url:`https://sendit.cqu.fr/api/${newURL}`});
+});
 
 // Starts the server
 app.listen(port, () => {

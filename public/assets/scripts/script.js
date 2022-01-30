@@ -11,6 +11,7 @@ function init() {
 function bindListeners() {
   const dropZone = document.querySelector('#file-drop');
   const input = document.querySelector('input[type="file"]');
+  const copy = document.querySelector('#copy');
   dropZone.addEventListener('dragover', (e) =>
     toggleDragover(e, dropZone, true)
   );
@@ -23,6 +24,7 @@ function bindListeners() {
   dropZone.addEventListener('drop', (e) => addFilesToInput(e, dropZone));
   dropZone.addEventListener('click', triggerInput);
   input.addEventListener('change', () => getFileURL(input.files));
+  copy.addEventListener('click', copyLink)
 }
 
 // Changes the border effect of the dropzone when files are hovering over it
@@ -59,6 +61,7 @@ function getFileURL(files) {
   Array.from(files).forEach((file) => {
     data.append('files', file, file.name);
   });
+  flipEnvelope();
   // Send the data
   fetch('https://sendit.cqu.fr/api', {
     method: 'POST',
@@ -66,12 +69,45 @@ function getFileURL(files) {
       'X-Timestamp': new Date().getTime(),
     },
     body: data,
+  })
+  .then(response => response.json())
+  .then(data => {
+    fetch(`https://cqu.fr/api/${data.url}`)
+    .then(response => response.json())
+    .then(data => {
+      const downloadLink = document.querySelector('#download-link');
+      const qrCode = document.querySelector('#qr-code');
+      downloadLink.innerHTML = data.url;
+      qrCode.setAttribute('src', `data:image/jpeg;base64,${data.qr}`);
+      sendEnvelope();
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  })
+  .catch(err => {
+    console.error(err);
   });
+}
+
+function copyLink() {
+  const url = document.querySelector('#download-link').innerHTML;
+  navigator.clipboard.writeText(url)
+    .then(() => {
+      const copy = document.querySelector('#copy');
+      copy.classList.toggle('copied');
+      setTimeout(() => {
+        copy.classList.toggle('copied');
+      }, 100);
+    })
+    .catch(err => {
+      console.error(err);
+    });
 }
 
 function flipEnvelope() {
   const envelope = document.querySelector('#envelope');
-  envelope.classList.add('flipped');
+  envelope.classList.toggle('flipped');
 }
 
 function sendEnvelope() {
