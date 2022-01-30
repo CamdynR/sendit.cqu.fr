@@ -22,6 +22,7 @@ function bindListeners() {
     toggleDragover(e, dropZone, false)
   );
   dropZone.addEventListener('drop', (e) => {
+    console.log('test');
     flipEnvelope();
     addFilesToInput(e, dropZone);
   });
