@@ -109,7 +109,7 @@ function copyLink() {
 
 function flipEnvelope() {
   const envelope = document.querySelector('#envelope');
-  envelope.classList.toggle('flipped');
+  envelope.classList.add('flipped');
 }
 
 function sendEnvelope() {
