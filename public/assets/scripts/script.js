@@ -23,9 +23,7 @@ function bindListeners() {
   );
   dropZone.addEventListener('drop', (e) => {
     flipEnvelope();
-    setTimeout(() => {
-      addFilesToInput(e, dropZone);
-    }, 1000);
+    addFilesToInput(e, dropZone);
   });
   dropZone.addEventListener('click', triggerInput);
   input.addEventListener('change', () => getFileURL(input.files));
