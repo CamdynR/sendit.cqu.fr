@@ -55,13 +55,14 @@ function triggerInput() {
 }
 
 // Uploads the files to the server and retrieves a URL to show the user
-function getFileURL(files) {
+async function getFileURL(files) {
   // Construct the data
   const data = new FormData();
   Array.from(files).forEach((file) => {
     data.append('files', file, file.name);
   });
   flipEnvelope();
+  await setTimeout(() => {}, 1000);
   // Send the data
   fetch('https://sendit.cqu.fr/api', {
     method: 'POST',
@@ -74,12 +75,13 @@ function getFileURL(files) {
   .then(data => {
     fetch(`https://cqu.fr/api/${data.url}`)
     .then(response => response.json())
-    .then(data => {
+    .then(async data => {
       const downloadLink = document.querySelector('#download-link');
       const qrCode = document.querySelector('#qr-code');
       downloadLink.innerHTML = data.url;
       qrCode.setAttribute('src', `data:image/jpeg;base64,${data.qr}`);
       sendEnvelope();
+      await setTimeout(() => {}, 1000);
     })
     .catch(err => {
       console.error(err);
