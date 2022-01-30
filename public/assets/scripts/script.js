@@ -21,7 +21,10 @@ function bindListeners() {
   dropZone.addEventListener('dragend', (e) =>
     toggleDragover(e, dropZone, false)
   );
-  dropZone.addEventListener('drop', (e) => addFilesToInput(e, dropZone));
+  dropZone.addEventListener('drop', async (e) => {
+    await flipEnvelope();
+    addFilesToInput(e, dropZone);
+  });
   dropZone.addEventListener('click', triggerInput);
   input.addEventListener('change', () => getFileURL(input.files));
   copy.addEventListener('click', copyLink)
@@ -61,8 +64,6 @@ async function getFileURL(files) {
   Array.from(files).forEach((file) => {
     data.append('files', file, file.name);
   });
-  flipEnvelope();
-  await setTimeout(() => {}, 1000);
   // Send the data
   fetch('https://sendit.cqu.fr/api', {
     method: 'POST',
@@ -78,10 +79,11 @@ async function getFileURL(files) {
     .then(async data => {
       const downloadLink = document.querySelector('#download-link');
       const qrCode = document.querySelector('#qr-code');
+      const copy = document.querySelector('#copy');
       downloadLink.innerHTML = data.url;
       qrCode.setAttribute('src', `data:image/jpeg;base64,${data.qr}`);
-      sendEnvelope();
-      await setTimeout(() => {}, 1000);
+      await sendEnvelope();
+      copy.click();
     })
     .catch(err => {
       console.error(err);
@@ -107,14 +109,24 @@ function copyLink() {
     });
 }
 
-function flipEnvelope() {
-  const envelope = document.querySelector('#envelope');
-  envelope.classList.add('flipped');
+async function flipEnvelope() {
+  return new Promise((resolve, reject) => {
+    const envelope = document.querySelector('#envelope');
+    envelope.classList.add('flipped');
+    setTimeout(() => {
+      resolve();
+    }, 1000);
+  });
 }
 
-function sendEnvelope() {
-  const envelope = document.querySelector('#envelope');
-  envelope.classList.add('uploaded');
+async function sendEnvelope() {
+  return new Promise((resolve, reject) => {
+    const envelope = document.querySelector('#envelope');
+    envelope.classList.add('uploaded');
+  setTimeout(() => {
+    resolve();
+  }, 1000);
+});
 }
 
 window.flipEnvelope = flipEnvelope;
