@@ -18,6 +18,13 @@
   <script src="assets/scripts/script.js" type="module"></script>
 </head>
 <body>
+  <div id="modal-wrapper" hidden>
+    <aside id="modal">
+      <h2 class="error">An error has occurred:</h2>
+      <p class="msg">Trouble uploading data to server</p>
+      <button>Back</button>
+    </aside>
+  </div>
   <section id="envelope">
     <section id="envelope-front">
       <header>
@@ -57,7 +64,7 @@
       <h2>Postcard</h2>
     </header>
     <section id="link-wrapper">
-      <output id="download-link">https://cqu.fr/JXM</output>
+      <output id="download-link"></output>
       <div id="btn-wrapper">
         <button id="another">Send Another</button>
         <button id="copy">Copy</button>
@@ -67,7 +74,7 @@
       </footer>
     </section>
     <section id="qr-wrapper">
-      <img id="qr-code" src="qr.jfif" alt="QR Code for the link">
+      <img id="qr-code" src="" alt="QR Code for the link">
     </section>
   </section>
 </body>
