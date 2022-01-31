@@ -49,7 +49,7 @@ app.get('/api/:files', (req, res) => {
     res.status(404).sendFile(__dirname + '/public/404.html');
   }
 
-  const dir = __dirname + '/download';
+  const dir = __dirname + '/downloads';
 
   // Checks if there is a ZIP file ready
   if (fs.existsSync(dir + `/${timestamp}.zip`)) {
