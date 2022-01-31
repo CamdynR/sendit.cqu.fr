@@ -64,7 +64,7 @@ app.get('/api/:files', (req, res) => {
       }
     });
   // Otherwise there should be a folder with a single file in it
-  } else if (fs.readdirSync(dir).length == 1) {
+  } else if (fs.existsSync(dir) && fs.readdirSync(dir).length == 1) {
     const file = fs.readdirSync(dir)[0];
     res.download(`uploads/${timestamp}/${file}`, file, err => {
       if (!err) {
@@ -78,6 +78,7 @@ app.get('/api/:files', (req, res) => {
     });
   // Otherwise the files don't exist
   } else {
+    delete uploadURLs[req.params.files];
     res.set('Content-Type', 'text/html')
     res.status(404).sendFile(__dirname + '/public/404.html');
   }
