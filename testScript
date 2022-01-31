@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ls /var/repos/sendit.cqu.fr/uploads
-ls /var/repos/sendit.cqu.fr/downloads
+rm -rf /var/repos/sendit.cqu.fr/uploads
+rm -rf /var/repos/sendit.cqu.fr/downloads
 mkdir /var/repos/sendit.cqu.fr/uploads
 mkdir /var/repos/sendit.cqu.fr/downloads
