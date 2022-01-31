@@ -27,7 +27,7 @@ function bindListeners() {
   );
   dropZone.addEventListener('drop', async (e) => {
     e.preventDefault();
-    await flipEnvelope();
+    // await flipEnvelope();
     addFilesToInput(e, dropZone);
   });
 
@@ -59,7 +59,6 @@ function addFilesToInput(e, dropZone) {
     input.files = e.dataTransfer.files;
   }
   dropZone.classList.remove('dragover');
-  console.log(input.files.length);
   getFileURL(input.files);
 }
 
