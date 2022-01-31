@@ -59,6 +59,7 @@ function addFilesToInput(e, dropZone) {
     input.files = e.dataTransfer.files;
   }
   dropZone.classList.remove('dragover');
+  console.log(input.files.length);
   getFileURL(input.files);
 }
 
