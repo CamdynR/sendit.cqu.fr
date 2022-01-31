@@ -26,7 +26,6 @@ function bindListeners() {
     toggleDragover(e, dropZone, false)
   );
   dropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
     addFilesToInput(e, dropZone);
   });
 
@@ -53,12 +52,13 @@ function toggleDragover(e, dropZone, isDragover) {
 
 // When files are dropped into the dropzone, add those files to the input element
 function addFilesToInput(e, dropZone) {
+  e.preventDefault();
   const input = document.querySelector('input[type="file"]');
   if (e.dataTransfer.files.length) {
     input.files = e.dataTransfer.files;
   }
   dropZone.classList.remove('dragover');
-  flipEnvelope.then(() => { getFileURL(input.files); });
+  flipEnvelope().then(() => { getFileURL(input.files); });
 }
 
 // Opens the hidden input element menu
