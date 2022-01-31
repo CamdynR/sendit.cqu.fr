@@ -36,10 +36,11 @@ body.error-page #envelope main {
   margin-bottom: 5%;
 }
 
-body.error-page #envelope section {
+body.error-page #envelope main section {
   align-self: center;
   font-size: 1.8vw;
   text-align: center;
+  margin: 0 5%;
 }
 
 h1 {
