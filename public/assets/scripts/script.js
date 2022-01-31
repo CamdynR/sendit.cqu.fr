@@ -27,7 +27,7 @@ function bindListeners() {
   );
   dropZone.addEventListener('drop', async (e) => {
     e.preventDefault();
-    // await flipEnvelope();
+    flipEnvelope();
     addFilesToInput(e, dropZone);
   });
 
