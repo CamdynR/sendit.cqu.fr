@@ -3,7 +3,7 @@
 const express = require('express');
 const multer = require('multer');
 const archiver = require('archiver');
-const fs = require('fs');
+const fs = require('fs-extra');
 const app = express();
 const port = 3002;
 
@@ -19,9 +19,7 @@ const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     // Use the timestamp to create a new directory
     const dir = `uploads/${req.get('X-Timestamp')}`;
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
-    }
+    fs.ensureDir(dir);
     callback(null, dir);
   },
   filename: (req, file, callback) => {
@@ -50,45 +48,73 @@ app.get('/api/:files', (req, res) => {
     res.set('Content-Type', 'text/html')
     res.status(404).sendFile(__dirname + '/public/404.html');
   }
-  res.download(`downloads/${timestamp}.zip`, 'send-it.zip', err => {
-    if (!err) {
-      fs.rmSync(`uploads/${timestamp}`, { recursive: true, force: true });
-      fs.rmSync(`downloads/${timestamp}.zip`);
-      delete uploadURLs[req.params.files];
-    } else {
-      res.set('Content-Type', 'text/html')
-      res.status(500).sendFile(__dirname + '/public/500.html');
-    }
-  });
+
+  const dir = __dirname + '/download';
+
+  if (fs.existsSync(dir + `/${timestamp}.zip`)) {
+    res.download(`downloads/${timestamp}.zip`, 'send-it.zip', err => {
+      if (!err) {
+        fs.rmSync(`uploads/${timestamp}`, { recursive: true, force: true });
+        fs.rmSync(`downloads/${timestamp}.zip`);
+        delete uploadURLs[req.params.files];
+      } else {
+        res.set('Content-Type', 'text/html');
+        res.status(500).sendFile(__dirname + '/public/500.html');
+      }
+    });
+  } else if (fs.existsSync(dir) && fs.lstatSync(dir) && fs.readdirSync(dir).length == 1) {
+    const file = fs.readdirSync(dir)[0];
+    res.download(`downloads/${timestamp}/${file}`, file, err => {
+      if (!err) {
+        fs.rmSync(`uploads/${timestamp}`, { recursive: true, force: true });
+        fs.rmSync(`downloads/${timestamp}`, { recursive: true, force: true });
+        delete uploadURLs[req.params.files];
+      } else {
+        res.set('Content-Type', 'text/html');
+        res.status(500).sendFile(__dirname + '/public/500.html');
+      }
+    });
+  }
 });
 
 // File uploader. Multer takes care of creating the necessary folders / files.
 app.post('/api', upload.array('files'), (req, res) => {
   // Grab the timestamp from the request headers
   const timestamp = req.get('X-Timestamp');
-  // Create an output location for the download zip
-  const output = fs.createWriteStream(
-    __dirname + `/downloads/${timestamp}.zip`
-  );
-  // Create a zip archive object
-  const archive = archiver('zip');
-  // Handle what happens when the archiver is done
-  output.on('close', function () {
+
+  // ZIP if there are multiple files
+  if (req.files.length < 2) {
+    // Create an output location for the download zip
+    const output = fs.createWriteStream(
+      __dirname + `/downloads/${timestamp}.zip`
+    );
+    // Create a zip archive object
+    const archive = archiver('zip');
+    // Handle what happens when the archiver is done
+    output.on('close', function () {
+      // Create a new short URL for the upload and store it
+      const newURL = generateURL();
+      uploadURLs[newURL] = timestamp;
+      // Send back the new URL!
+      res.json({url:`https://sendit.cqu.fr/api/${newURL}`});
+    });
+    // Handle what happens if the zip archiver runs into an error
+    archive.on('error', function (err) {
+      res.set('Content-Type', 'text/html');
+      res.status(500).sendFile('/public/500.html');
+      throw err;
+    });
+    archive.pipe(output);
+    archive.directory(`uploads/${timestamp}`, false);
+    archive.finalize();
+  } else {
+    fs.copySync(`/uploads/${timestamp}`, `/downloads/${timestamp}`);
     // Create a new short URL for the upload and store it
     const newURL = generateURL();
     uploadURLs[newURL] = timestamp;
     // Send back the new URL!
     res.json({url:`https://sendit.cqu.fr/api/${newURL}`});
-  });
-  // Handle what happens if the zip archiver runs into an error
-  archive.on('error', function (err) {
-    res.set('Content-Type', 'text/html');
-    res.status(500).sendFile('/public/500.html');
-    throw err;
-  });
-  archive.pipe(output);
-  archive.directory(`uploads/${timestamp}`, false);
-  archive.finalize();
+  }
 });
 
 // Starts the server
