@@ -44,7 +44,7 @@ app.get('/api/:files', (req, res) => {
   // Grab the timestamp of the requested files
   const timestamp = uploadURLs[req.params.files];
   // If the timestamp doesn't exist, send a 404 page
-  if (!timestamp) {
+  if (!timestamp || timestamp == 'undefined') {
     res.set('Content-Type', 'text/html')
     res.status(404).sendFile(__dirname + '/public/404.html');
   }
