@@ -25,9 +25,8 @@ function bindListeners() {
   dropZone.addEventListener('dragend', (e) =>
     toggleDragover(e, dropZone, false)
   );
-  dropZone.addEventListener('drop', async (e) => {
+  dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
-    flipEnvelope();
     addFilesToInput(e, dropZone);
   });
 
@@ -59,7 +58,7 @@ function addFilesToInput(e, dropZone) {
     input.files = e.dataTransfer.files;
   }
   dropZone.classList.remove('dragover');
-  getFileURL(input.files);
+  flipEnvelope.then(() => { getFileURL(input.files); });
 }
 
 // Opens the hidden input element menu
