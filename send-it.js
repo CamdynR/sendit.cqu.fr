@@ -85,7 +85,7 @@ app.post('/api', upload.array('files'), (req, res) => {
   const timestamp = req.get('X-Timestamp');
 
   // ZIP if there are multiple files
-  if (req.files.length < 2) {
+  if (req.files.length > 1) {
     // Create an output location for the download zip
     const output = fs.createWriteStream(
       __dirname + `/downloads/${timestamp}.zip`
