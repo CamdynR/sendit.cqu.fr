@@ -57,7 +57,8 @@ app.get('/api/:files', (req, res) => {
     });
   });
   archive.on('error', function (err) {
-    res.status(500).send('Trouble zipping your files');
+    res.set('Content-Type', 'text/html');
+    res.status(500).sendFile(__dirname + '/public/404.html');
     throw err;
   });
   archive.pipe(output);
