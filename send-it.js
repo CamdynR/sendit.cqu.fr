@@ -49,10 +49,10 @@ app.get('/api/:files', (req, res) => {
     res.status(404).sendFile(__dirname + '/public/404.html');
   }
 
-  const dir = __dirname + '/downloads';
+  const dir = __dirname + `/uploads/${timestamp}`;
 
   // Checks if there is a ZIP file ready
-  if (fs.existsSync(dir + `/${timestamp}.zip`)) {
+  if (fs.existsSync(__dirname + `/downloads/${timestamp}.zip`)) {
     res.download(`downloads/${timestamp}.zip`, 'send-it.zip', err => {
       if (!err) {
         fs.rmSync(`uploads/${timestamp}`, { recursive: true, force: true });
@@ -64,9 +64,9 @@ app.get('/api/:files', (req, res) => {
       }
     });
   // Otherwise there should be a folder with a single file in it
-  } else if (fs.existsSync(dir) && fs.lstatSync(dir) && fs.readdirSync(dir).length == 1) {
+  } else if (fs.readdirSync(dir).length == 1) {
     const file = fs.readdirSync(dir)[0];
-    res.download(`downloads/${timestamp}/${file}`, file, err => {
+    res.download(`uploads/${timestamp}/${file}`, file, err => {
       if (!err) {
         fs.rmSync(`uploads/${timestamp}`, { recursive: true, force: true });
         fs.rmSync(`downloads/${timestamp}`, { recursive: true, force: true });
@@ -76,6 +76,10 @@ app.get('/api/:files', (req, res) => {
         res.status(500).sendFile(__dirname + '/public/500.html');
       }
     });
+  // Otherwise the files don't exist
+  } else {
+    res.set('Content-Type', 'text/html')
+    res.status(404).sendFile(__dirname + '/public/404.html');
   }
 });
 
@@ -110,7 +114,6 @@ app.post('/api', upload.array('files'), (req, res) => {
     archive.directory(`uploads/${timestamp}`, false);
     archive.finalize();
   } else {
-    fs.copySync(`/uploads/${timestamp}`, `/downloads/${timestamp}`);
     // Create a new short URL for the upload and store it
     const newURL = generateURL();
     uploadURLs[newURL] = timestamp;
