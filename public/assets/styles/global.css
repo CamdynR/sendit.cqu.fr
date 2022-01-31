@@ -30,6 +30,18 @@ body > * {
   grid-area: center;
 }
 
+body.error-page #envelope main {
+  grid-template-rows: 1fr;
+  height: 60%;
+  margin-bottom: 5%;
+}
+
+body.error-page #envelope section {
+  align-self: center;
+  font-size: 1.8vw;
+  text-align: center;
+}
+
 h1 {
   font-size: 4.5vw;
   margin-top: -10px;
