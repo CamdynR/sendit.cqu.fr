@@ -17,6 +17,7 @@ const bannedURLs = ['KKK'];
 // Set the storage directory and file's name
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
+    console.log(file);
     // Use the timestamp to create a new directory
     const dir = `uploads/${req.get('X-Timestamp')}`;
     if (!fs.existsSync(dir)) {
@@ -43,13 +44,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // File retriever
 app.get('/api/:files', (req, res) => {
+  // Grab the timestamp of the requested files
   const timestamp = uploadURLs[req.params.files];
-
+  // If the timestamp doesn't exist, send a 404 page
   if (!timestamp) {
     res.set('Content-Type', 'text/html')
     res.status(404).sendFile(__dirname + '/public/404.html');
   }
-
   const output = fs.createWriteStream(
     __dirname + `/downloads/${timestamp}.zip`
   );
@@ -72,11 +73,9 @@ app.get('/api/:files', (req, res) => {
   archive.finalize();
 });
 
-// File uploader
+// File uploader. Multer takes care of creating the necessary folders / files.
 app.post('/api', upload.array('files'), (req, res) => {
-  if (req.files) {
-    console.log(req.files);
-  }
+  console.log('running this');
   // Create a new short URL for the upload and store it
   const newURL = generateURL();
   uploadURLs[newURL] = req.get('X-Timestamp');
