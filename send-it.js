@@ -44,6 +44,12 @@ app.use(express.urlencoded({ extended: true }));
 // File retriever
 app.get('/api/:files', (req, res) => {
   const timestamp = uploadURLs[req.params.files];
+
+  if (!timestamp) {
+    res.set('Content-Type', 'text/html')
+    res.status(404).sendFile(__dirname + '/public/404.html');
+  }
+
   const output = fs.createWriteStream(
     __dirname + `/downloads/${timestamp}.zip`
   );
@@ -58,7 +64,7 @@ app.get('/api/:files', (req, res) => {
   });
   archive.on('error', function (err) {
     res.set('Content-Type', 'text/html');
-    res.status(500).sendFile(__dirname + '/public/404.html');
+    res.status(500).sendFile('/public/500.html');
     throw err;
   });
   archive.pipe(output);
