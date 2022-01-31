@@ -51,6 +51,7 @@ app.get('/api/:files', (req, res) => {
 
   const dir = __dirname + '/download';
 
+  // Checks if there is a ZIP file ready
   if (fs.existsSync(dir + `/${timestamp}.zip`)) {
     res.download(`downloads/${timestamp}.zip`, 'send-it.zip', err => {
       if (!err) {
@@ -62,6 +63,7 @@ app.get('/api/:files', (req, res) => {
         res.status(500).sendFile(__dirname + '/public/500.html');
       }
     });
+  // Otherwise there should be a folder with a single file in it
   } else if (fs.existsSync(dir) && fs.lstatSync(dir) && fs.readdirSync(dir).length == 1) {
     const file = fs.readdirSync(dir)[0];
     res.download(`downloads/${timestamp}/${file}`, file, err => {
